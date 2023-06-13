@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
         refreshButton.setOnClickListener(v -> {
             List<Notification> notifications1 = databaseHelper.getAllNotifications();
-            System.out.println("Notifications: " + notifications1);
             appAdapter = new AppAdapter(notifications1);
             recyclerView.setAdapter(appAdapter);
         });

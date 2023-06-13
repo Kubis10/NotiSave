@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/iconImageView"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="59dp"
+        android:layout_height="57dp"
         android:scaleType="centerCrop"
         android:src="@mipmap/ic_launcher_round" />
 
@@ -34,6 +34,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/timestampTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="#675E5E"
+            android:textSize="12sp" />
 
     </LinearLayout>
 </LinearLayout>

@@ -3,7 +3,10 @@ package webace.notisave;
 import android.app.Notification;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 
@@ -24,23 +27,11 @@ public class MyNotificationListenerService extends NotificationListenerService {
         long timestamp = sbn.getPostTime();
         String packageName = sbn.getPackageName();
 
-        Drawable appIcon = getAppIconByPackageName(packageName);
+        Drawable appIcon = sbn.getNotification().extras.getParcelable(Notification.EXTRA_LARGE_ICON);
 
         webace.notisave.Notification notification = new webace.notisave.Notification(title, text, timestamp, packageName, appIcon);
 
         System.out.println("Notification posted: " + notification.getTitle() + " " + notification.getText());
         databaseHelper.insertNotification(notification);
-    }
-
-    private Drawable getAppIconByPackageName(String packageName) {
-        try {
-            PackageManager pm = getPackageManager();
-            ApplicationInfo appInfo = pm.getApplicationInfo(packageName, 0);
-            return pm.getApplicationIcon(appInfo);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 }

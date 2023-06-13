@@ -21,6 +21,7 @@ public class NotificationDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_TEXT = "text";
     private static final String COLUMN_TIMESTAMP = "timestamp";
     private static final String COLUMN_PACKAGE_NAME = "package_name";
+    private static final String COLUMN_APP_ICON = "app_icon";
 
     private Context context;
 
@@ -36,7 +37,8 @@ public class NotificationDatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_TITLE + " TEXT, " +
                 COLUMN_TEXT + " TEXT, " +
                 COLUMN_TIMESTAMP + " INTEGER, " +
-                COLUMN_PACKAGE_NAME + " TEXT" +
+                COLUMN_PACKAGE_NAME + " TEXT," +
+                COLUMN_APP_ICON + " TEXT" +
                 ")";
         db.execSQL(createTableQuery);
     }
@@ -55,6 +57,8 @@ public class NotificationDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_TEXT, notification.getText());
         values.put(COLUMN_TIMESTAMP, notification.getTimestamp());
         values.put(COLUMN_PACKAGE_NAME, notification.getPackageName());
+        values.put(COLUMN_APP_ICON, notification.getAppIcon().toString());
+
 
         db.insert(TABLE_NAME, null, values);
         db.close();
@@ -72,11 +76,9 @@ public class NotificationDatabaseHelper extends SQLiteOpenHelper {
                 String text = cursor.getString(cursor.getColumnIndex(COLUMN_TEXT));
                 long timestamp = cursor.getLong(cursor.getColumnIndex(COLUMN_TIMESTAMP));
                 String packageName = cursor.getString(cursor.getColumnIndex(COLUMN_PACKAGE_NAME));
+                String appIcon = cursor.getString(cursor.getColumnIndex(COLUMN_APP_ICON));
 
-                // Retrieve the app icon based on the package name
-                Drawable appIcon = getAppIconByPackageName(packageName);
-
-                Notification notification = new Notification(title, text, timestamp, packageName, appIcon);
+                Notification notification = new Notification(title, text, timestamp, packageName, getDrawableFromString(appIcon));
                 notifications.add(notification);
             } while (cursor.moveToNext());
         }
@@ -86,16 +88,12 @@ public class NotificationDatabaseHelper extends SQLiteOpenHelper {
 
         return notifications;
     }
-
-    private Drawable getAppIconByPackageName(String packageName) {
-        try {
-            PackageManager pm = context.getPackageManager();
-            ApplicationInfo appInfo = pm.getApplicationInfo(packageName, 0);
-            return pm.getApplicationIcon(appInfo);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+    private Drawable getDrawableFromString(String drawableName) {
+        int resourceId = context.getResources().getIdentifier(drawableName, "drawable", context.getPackageName());
+        if (resourceId != 0) {
+            return context.getResources().getDrawable(resourceId);
         }
-
         return null;
     }
+
 }
