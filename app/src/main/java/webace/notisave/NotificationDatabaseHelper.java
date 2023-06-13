@@ -57,7 +57,11 @@ public class NotificationDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_TEXT, notification.getText());
         values.put(COLUMN_TIMESTAMP, notification.getTimestamp());
         values.put(COLUMN_PACKAGE_NAME, notification.getPackageName());
-        values.put(COLUMN_APP_ICON, notification.getAppIcon().toString());
+        if (notification.getAppIcon() != null) {
+            values.put(COLUMN_APP_ICON, notification.getAppIcon().toString());
+        } else {
+            values.put(COLUMN_APP_ICON, "");
+        }
 
 
         db.insert(TABLE_NAME, null, values);

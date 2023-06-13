@@ -27,7 +27,7 @@ public class MyNotificationListenerService extends NotificationListenerService {
         long timestamp = sbn.getPostTime();
         String packageName = sbn.getPackageName();
 
-        Drawable appIcon = sbn.getNotification().extras.getParcelable(Notification.EXTRA_LARGE_ICON);
+        Drawable appIcon = sbn.getNotification().extras.getParcelable(Notification.EXTRA_LARGE_ICON_BIG);
 
         webace.notisave.Notification notification = new webace.notisave.Notification(title, text, timestamp, packageName, appIcon);
 
