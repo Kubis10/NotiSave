@@ -1,9 +1,14 @@
 package webace.notisave;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(appAdapter);
 
         Button refreshButton = findViewById(R.id.button);
+        Button send = findViewById(R.id.send);
+
+        send.setOnClickListener(v -> {
+            NotificationSender notificationSender = new NotificationSender();
+            notificationSender.sendNotification(this, "Test", "Test");
+        });
 
         refreshButton.setOnClickListener(v -> {
             List<Notification> notifications1 = databaseHelper.getAllNotifications();
